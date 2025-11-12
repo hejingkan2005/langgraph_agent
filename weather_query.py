@@ -1,6 +1,12 @@
+from dotenv import load_dotenv
 import requests
+import os
+from pathlib import Path
 from langchain_core.tools import tool
 from pydantic import BaseModel, Field
+
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 class WeatherQuery(BaseModel):
     loc: str = Field(description="城市名称")
@@ -15,7 +21,7 @@ def get_weather(loc):
     """
     url = "https://api.seniverse.com/v3/weather/now.json"
     params = {
-        "key": "SykklgyO5g1zy9gxi",
+        "key": os.getenv("WEATHER_API_KEY"), #"SykklgyO5g1zy9gxi",
         "location": loc,
         "language": "zh-Hans",
         "unit": "c",
